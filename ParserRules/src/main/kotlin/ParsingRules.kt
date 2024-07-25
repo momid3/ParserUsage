@@ -16,35 +16,4 @@ val ooo = !"ooo"
 val anyOfParameters = anyOf(parameter, allowedName, ooo)
 
 @Type
-val parameters = splitByNW(anyOfParameters, ",")
-
-/***
- * splitBy without "wanting" for each element
- */
-fun splitByNW(expression: Expression, splitBy: String): CustomExpression {
-    return CustomExpression(
-        TypeInfo(expression, ListType(expression))
-    ) { tokens, startIndex, endIndex, thisExpression ->
-        var nextTokenIndex = startIndex
-        val subExpressionResults = ArrayList<ExpressionResult>()
-        val splitExpression = ExactExpression(splitBy)
-
-        val firstEvaluation = eval(expression, startIndex, tokens, endIndex) ?: return@CustomExpression null
-        nextTokenIndex = firstEvaluation.nextTokenIndex
-        subExpressionResults.add(firstEvaluation)
-
-        while (true) {
-            val splitEvaluation = eval(splitExpression, nextTokenIndex, tokens, endIndex) ?: break
-            nextTokenIndex = splitEvaluation.nextTokenIndex
-
-            val nextEvaluation = eval(expression, nextTokenIndex, tokens, endIndex) ?: return@CustomExpression null
-            nextTokenIndex = nextEvaluation.nextTokenIndex
-            subExpressionResults.add(nextEvaluation)
-        }
-
-        return@CustomExpression MultiExpressionResult(
-            ExpressionResult(thisExpression, startIndex..nextTokenIndex),
-            subExpressionResults
-        )
-    }
-}
+val parameters = splitBy(anyOfParameters, ",")

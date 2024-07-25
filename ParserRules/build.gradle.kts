@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") version "2.0.0"
+    id("com.google.devtools.ksp") version "2.0.0-1.0.23"
 }
 
 group = "com.momid"
@@ -14,7 +15,7 @@ dependencies {
     testImplementation(kotlin("test"))
     implementation(kotlin("stdlib-jdk8"))
     implementation("com.github.momid3:TraDeep:0.3.8")
-    implementation(project(":ParserRules"))
+    ksp("com.github.momid3:TraDeep:0.3.8")
 }
 
 tasks.test {
